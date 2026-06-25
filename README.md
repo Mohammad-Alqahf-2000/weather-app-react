@@ -8,7 +8,7 @@ A bilingual (Arabic / English) weather dashboard built with React. It fetches li
 ![i18next](https://img.shields.io/badge/i18next-26-26A69A?logo=i18next&logoColor=white)
 
 ## Live Demo
- `https://weather-app-mq.netlify.app`
+ `https://weather-app-react-mq.netlify.app`
 
 ## Features
 
