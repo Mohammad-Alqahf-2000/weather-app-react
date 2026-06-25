@@ -1,0 +1,14 @@
+{
+  "damascus": "دمشق",
+  "language": "إنجليزي",
+  "min":"الصغرى",
+  "max":"الكبرى",
+  "clear sky": "سماء صافية",
+  "few clouds": "بعض السحب",
+  "scattered clouds": "سحب متفرقة",
+  "shower rain": "زخات مطر",
+  "rain": "ماطر",
+  "thunderstorm": "عواصف رعدية",
+  "snow": "مثلج",
+  "mist": "ضبابي"
+}
