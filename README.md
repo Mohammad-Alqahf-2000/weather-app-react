@@ -5,19 +5,21 @@ A bilingual (Arabic / English) weather dashboard built with React. It fetches li
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
 ![Material UI](https://img.shields.io/badge/MUI-9-007FFF?logo=mui&logoColor=white)
+![Redux Toolkit](https://img.shields.io/badge/Redux_Toolkit-2-764ABC?logo=redux&logoColor=white)
 ![i18next](https://img.shields.io/badge/i18next-26-26A69A?logo=i18next&logoColor=white)
 
 ## Live Demo
- `https://weather-app-react-mq.netlify.app`
+
+https://weather-app-react-mq.netlify.app
 
 ## Features
 
 - Real-time weather data from OpenWeatherMap
 - Arabic and English language toggle with `i18next`
 - RTL / LTR layout switching for Arabic and English
-- Custom React hook (`useWeather`) for data fetching and state management
+- Global state management with **Redux Toolkit** and `createAsyncThunk`
+- Separated API layer (`weatherService`) from state logic (`weatherSlice`)
 - Loading spinner and error state UI
-- Request cancellation with `AbortController` on unmount
 - Material UI components with a custom glass-style card design
 - IBM Plex Sans Arabic custom font support
 
@@ -27,30 +29,52 @@ A bilingual (Arabic / English) weather dashboard built with React. It fetches li
 |---|---|
 | Framework | React 19 |
 | Build tool | Vite 8 |
+| State management | Redux Toolkit, React-Redux |
 | UI | Material UI (MUI) |
 | HTTP client | Axios |
 | Internationalization | i18next, react-i18next |
 | Date formatting | Moment.js |
 | API | OpenWeatherMap |
 
+## Architecture
+
+Data flows through three layers:
+
+```
+Component  →  dispatch(fetchWeather)  →  weatherSlice (createAsyncThunk)
+                                                    ↓
+                                          weatherService (Axios)
+                                                    ↓
+                                          OpenWeatherMap API
+```
+
+| Layer | Responsibility |
+|---|---|
+| `components/` | UI rendering, user interactions |
+| `features/weather/` | Redux state, async thunks, reducers |
+| `services/` | HTTP requests to external APIs |
+
 ## Project Structure
 
 ```
 src/
+├── app/
+│   └── store.js               # Redux store configuration
+├── features/
+│   └── weather/
+│       └── weatherSlice.js    # Weather state, fetchWeather thunk, reducers
 ├── components/
-│   ├── WeatherDisplayer.jsx   # Main container — fetches data, handles locale
+│   ├── WeatherDisplayer.jsx   # Main container — dispatches fetch, handles locale
 │   ├── WeatherCard.jsx        # Weather UI card
 │   ├── Loader.jsx             # Loading spinner
 │   └── ErrorMessage.jsx       # Error display
-├── hooks/
-│   └── useWeather.js          # Custom hook for weather state & fetching
 ├── services/
-│   └── weatherService.js      # OpenWeatherMap API calls
+│   └── weatherService.js      # OpenWeatherMap API calls (Axios)
 ├── utils/
 │   └── formatDate.js          # Localized date formatting
 ├── i18n.js                    # i18next configuration
 ├── App.jsx
-└── main.jsx
+└── main.jsx                   # Redux Provider setup
 
 public/
 └── locales/
@@ -80,7 +104,7 @@ cd weather-project
 npm install
 ```
 
-3. Create a `.env` file in the project root:
+3. Create a `.env` file in the project root (or copy from `.env.example`):
 
 ```env
 VITE_WEATHER_API_KEY=your_openweathermap_api_key_here
@@ -140,20 +164,20 @@ Drag and drop the `dist` folder into the Netlify dashboard.
 
 Never commit your `.env` file. The `.gitignore` already excludes it.
 
-
 ## What I Learned
 
-- Building reusable custom React hooks
+- Global state management with Redux Toolkit and `createAsyncThunk`
+- Feature-based folder structure (`app/`, `features/`, `services/`)
+- Separating API calls (service layer) from state logic (slice)
 - Fetching data from a REST API with Axios
 - Managing loading, success, and error UI states
 - Internationalization (i18n) with Arabic RTL support
 - Component-based architecture and separation of concerns
-- Cancelling in-flight HTTP requests with `AbortController`
 - Styling with Material UI and custom themes
 
 ## Author
+
 **Mohammad Alqahf**
 
 - GitHub: [@Mohammad-Alqahf-2000](https://github.com/Mohammad-Alqahf-2000)
 - LinkedIn: [mohammad alqahf](https://www.linkedin.com/in/mohammad-alqahf-204046212/)
-
